@@ -1,0 +1,34 @@
+(library
+  (name dataframe)
+  (modules dataframe)
+  (libraries 
+    core
+    csv)
+  (modules_without_implementation dataframe))
+
+(library
+  (name simpledict)
+  (modules simpledict)
+  (libraries core)
+  (modules_without_implementation simpledict))
+
+(library
+  (name similarpair)
+  (modules similarpair)
+  (libraries core)
+  (modules_without_implementation similarpair))
+
+(library
+  (name pairvalueset)
+  (modules pairvalueset)
+  (libraries core)
+  (modules_without_implementation pairvalueset))
+
+; (executable
+;   (name ngrams)
+;   (modules ngrams)
+;   (libraries
+;     lib
+;     core
+;     core_unix.command_unix)
+;   (preprocess (pps ppx_jane)))
