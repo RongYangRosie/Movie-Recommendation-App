@@ -1,5 +1,6 @@
-(executable
-  (name main)
-  (libraries rating)
-   (preprocess (pps ppx_deriving.show ppx_deriving.ord))
-  (modes byte exe))
+(library
+ (name movie)
+ (wrapped false)
+ (libraries csv core yojson)
+ (preprocess (pps ppx_deriving.show ppx_deriving.ord))
+ (modules movie rating))

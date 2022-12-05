@@ -1,5 +1,9 @@
 let _ = 
   Printexc.record_backtrace true;
-  let movies = Sys.argv.(1) in
-  let credits = Sys.argv.(2) in
-  Movie.csv2list movies credits
+  if Sys.argv.(1) = "rating"
+  then
+    Rating.csv2list "ratings_small.csv" |>
+    Rating.show |> 
+    print_endline
+  else
+    Movie.csv2list "tmdb_5000_movies.csv" "tmdb_5000_credits.csv"

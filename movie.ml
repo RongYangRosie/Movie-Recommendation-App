@@ -111,7 +111,7 @@ let csv2list movies credits =
               List.map
                 (function
                   | `Assoc m -> 
-                      begin match List.assoc "character" m with
+                      begin match List.assoc "name" m with
                       | `String s -> s
                       | _ -> invalid_arg "invalid input"
                       end
@@ -178,5 +178,5 @@ let csv2list movies credits =
         })
       credits
   in
-  let result = List.filter_map (function None -> None | s -> s) result in
+  let result = List.filter_map Fun.id result in
   show result |> print_endline
