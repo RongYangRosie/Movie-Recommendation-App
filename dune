@@ -4,6 +4,7 @@
     src/main.ml
     src/movie.ml
     src/rating.ml
+    src/demographic_mode.ml
     src/data_preprocessing.ml
     src/content_based_mode.ml
     src/dune
