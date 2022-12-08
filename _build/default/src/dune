@@ -1,0 +1,27 @@
+(library
+  (name movie)
+  (modules movie rating)
+  (wrapped false)
+  (libraries core))
+
+(library
+  (name data_preprocessing)
+  (modules data_preprocessing)
+  (libraries csv yojson movie)
+  (preprocess
+    (pps ppx_deriving.show ppx_deriving.ord))
+)
+
+(library
+  (name content_based_mode)
+  (modules content_based_mode)
+  (libraries core sklearn movie))
+
+(executable
+  (name main)
+  (modules main)
+  (libraries
+    core_unix.command_unix
+    data_preprocessing
+    content_based_mode)
+  (preprocess (pps ppx_jane)))
