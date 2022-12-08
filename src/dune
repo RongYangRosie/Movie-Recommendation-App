@@ -28,6 +28,11 @@
   (preprocess 
     (pps bisect_ppx))
 )
+  
+(library
+  (name demographic_mode)
+  (modules demographic_mode)
+  (libraries owl))
 
 (executable
   (name main)

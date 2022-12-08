@@ -42,6 +42,7 @@ let test_combine_field _ =
   assert_equal "cultureclash future spacewar samworthington zoesaldana sigourneyweaver jamescameron action adventure fantasy" @@ combine_field movie1;
   assert_equal "spy basedonnovel secretagent danielcraig christophwaltz léaseydoux sammendes action adventure crime" @@ combine_field movie2
 
+
 let sim_arr = [
   [1.0000000000000002; 0.18181818181818182];
   [0.18181818181818182; 1.0000000000000002]]
@@ -52,14 +53,19 @@ let test_calculate_cosine_similarity _ =
 let test_get_recommendations _ = 
   assert_equal ["Spectre"] @@ get_recommendations ~movie_list:movie_list ~title:movie1.title ~n:1
 
-let tests = 
+let test_vote_average_mean _ =
+  assert_equal Some(9.9) @@ test_vote_average_mean movie_list
+
+
+ 
   "Function Test" 
   >: test_list [
     "Clean string" >:: test_clean_string;
     "Combine helper" >:: test_combine_helper;
     "Combine field" >:: test_combine_field;
     "Calculate sim" >:: test_calculate_cosine_similarity;
-    "Get recommendations" >:: test_get_recommendations
+    "Get recommendations" >:: test_get_recommendations;
+    "Get mean value of vote average" >:: test_vote_average_mean
   ]
 
 let series = 
