@@ -54,7 +54,7 @@ let test_get_recommendations _ =
   assert_equal ["Spectre"] @@ get_recommendations ~movie_list:movie_list ~title:movie1.title ~n:1
 
 let test_vote_average_mean _ =
-  assert_equal Some(9.9) @@ test_vote_average_mean movie_list
+  assert_equal Some(9.9) @@ vote_average_mean movie_list
 
 
  
