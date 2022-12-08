@@ -2,20 +2,32 @@
   (name movie)
   (modules movie rating)
   (wrapped false)
-  (libraries core))
+  (libraries core)
+  (preprocess
+    (pps ppx_deriving.show ppx_deriving.ord bisect_ppx)))
+
+; (library
+;   (name rating)
+;   (modules rating)
+;   (libraries core)
+;   (preprocess
+;     (pps ppx_deriving.show ppx_deriving.ord bisect_ppx)))
 
 (library
   (name data_preprocessing)
   (modules data_preprocessing)
   (libraries csv yojson movie)
   (preprocess
-    (pps ppx_deriving.show ppx_deriving.ord))
+    (pps ppx_deriving.show ppx_deriving.ord bisect_ppx))
 )
 
 (library
   (name content_based_mode)
   (modules content_based_mode)
-  (libraries core sklearn movie))
+  (libraries core sklearn movie)
+  (preprocess 
+    (pps bisect_ppx))
+)
 
 (executable
   (name main)
