@@ -1,4 +1,4 @@
-open Movie
+(* open Movie *)
 
 (*type movie_wr_rating = {
   movie_id : int;
@@ -15,22 +15,22 @@ open Movie
 }
 *)
 (*calculate mean value(C) of the all movies' vote_average, C is the mean vote across the whole report*)
-let vote_average_mean movie_list =
+(* let vote_average_mean movie_list =
   List.map (fun {vote_average ; _ } -> float_of_string vote_average) movie_list |>
   List.fold_left ( +. ) 0. |>
-  (fun sum -> sum /. (List.length movie_list |> float_of_int))
+  (fun sum -> sum /. (List.length movie_list |> float_of_int)) *)
  
 (*calculate quantile value(m), m is the minimum votes required to be listed in the chartm is the minimum votes required to be listed in the chart*)
-let quantile movie_list =
+(* let quantile movie_list =
   let vote_counts = List.map (fun { vote_count; _ } -> float_of_string vote_count) movie_list in
-  Owl_stats.quantile vote_counts 0.9
+  Owl_stats.quantile vote_counts 0.9 *)
  
 (*filter all movies whose vote_count is greater than 0.9 quantile*)
-let filter_m movie_list =
+(* let filter_m movie_list =
   let m = quantile results in
   List.filter
   (fun { vote_count; _ } -> float_of_string vote_count >= m)
-  movie_list
+  movie_list *)
 
 (*
 

@@ -81,7 +81,7 @@ let combine_vector (vect_list: 'a list) =
   let vect_list = Py.List.of_list @@ List.map ~f:Obj.to_pyobject vect_list 
   in Obj.of_pyobject @@ Scipy.Sparse.hstack ~format:"csr" ~blocks:vect_list ()
 
-let type_convertor (arr) : float list list = 
+let type_converter (arr) : float list list = 
   Obj.to_pyobject arr |> 
   Py.Sequence.to_list_map (Py.Sequence.to_list_map (Py.Float.to_float)) 
 
@@ -89,7 +89,7 @@ let calculate_cosine_similarity (movie_list: t) : float list list =
   let combined_vector = [generate_tfidfvector; generate_countvector] 
   |> List.map ~f:(fun f -> f movie_list)
   |> combine_vector
-  in Obj.of_pyobject @@ Sklearn.Metrics.Pairwise.cosine_similarity ~x:combined_vector () |> type_convertor
+  in Obj.of_pyobject @@ Sklearn.Metrics.Pairwise.cosine_similarity ~x:combined_vector () |> type_converter
 
 let desc_sort_similarity (sim: float list list) (idx: int) : (int * float) list = 
   List.nth_exn sim idx

@@ -53,19 +53,18 @@ let test_calculate_cosine_similarity _ =
 let test_get_recommendations _ = 
   assert_equal ["Spectre"] @@ get_recommendations ~movie_list:movie_list ~title:movie1.title ~n:1
 
-let test_vote_average_mean _ =
-  assert_equal Some(9.9) @@ vote_average_mean movie_list
+(* let test_vote_average_mean _ =  
+  assert_equal Some(9.9) @@ vote_average_mean movie_list *)
 
-
- 
+let tests = 
   "Function Test" 
   >: test_list [
     "Clean string" >:: test_clean_string;
     "Combine helper" >:: test_combine_helper;
     "Combine field" >:: test_combine_field;
     "Calculate sim" >:: test_calculate_cosine_similarity;
-    "Get recommendations" >:: test_get_recommendations;
-    "Get mean value of vote average" >:: test_vote_average_mean
+    "Get recommendations" >:: test_get_recommendations
+    (* "Get mean value of vote average" >:: test_vote_average_mean *)
   ]
 
 let series = 
