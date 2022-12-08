@@ -16,6 +16,11 @@
   (name content_based_mode)
   (modules content_based_mode)
   (libraries core sklearn movie))
+  
+(library
+  (name demographic_mode)
+  (modules demographic_mode)
+  (libraries owl))
 
 (executable
   (name main)
