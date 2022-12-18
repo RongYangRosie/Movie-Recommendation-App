@@ -2,9 +2,7 @@
   (target movie_recommendation_app.zip)
   (deps 
     src/main.ml
-    src/movie.mli
     src/movie.ml
-    src/rating.mli
     src/rating.ml
     src/demographic_mode.ml
     src/data_preprocessing.ml
