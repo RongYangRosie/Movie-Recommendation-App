@@ -5,4 +5,5 @@
     ounit2
     content_based_mode
     movie
+    demographic_mode
   ))
