@@ -101,10 +101,10 @@ let find_opt str (k, v) name =
       end
   | Some _ -> None
 
-let  load_movie_data(credits: string) (movies: string): Movie.t =
+let  load_movie_data(credits: string) (movies: string)(keywords_movie: string): Movie.t =
   let credits = parse_credit credits in
   let movies = parse_movies movies in
-  (*let keywords = parse_keywords in*)
+  (*let keywords = parse_keywords keywords_movie in*)
   let movies_map = List.fold
     ~f:(fun acc ({ id; _ } as movie) -> Map.add_exn acc ~key:id ~data:movie) 
     ~init:(Map.empty (module Int)) movies
@@ -114,7 +114,7 @@ let  load_movie_data(credits: string) (movies: string): Movie.t =
       let cast = find_list cast "name" in
       let movie = Map.find_exn movies_map movie_id in
       let genres = find_list movie.genres "name" in
-      (*let keywords = find_list keywords.keywords "name" in*)
+      (*let keyword = find_list keywords.keyword "name" in*)
       match find_opt crew ("job", "Director") "name" with
       | None -> None
       | Some director ->
@@ -124,3 +124,6 @@ let  load_movie_data(credits: string) (movies: string): Movie.t =
           vote_average = movie.vote_average }: Movie.movie) )
   in
   List.filter_map result ~f:(fun x -> x)
+
+
+  
