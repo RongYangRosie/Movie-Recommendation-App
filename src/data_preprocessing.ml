@@ -101,7 +101,7 @@ let find_opt str (k, v) name =
       end
   | Some _ -> None
 
-let  load_movie_data(credits: string) (movies: string)(keywords_movie: string): Movie.t =
+let  load_movie_data(credits: string) (movies: string)(*(keywords_movie: string)*): Movie.t =
   let credits = parse_credit credits in
   let movies = parse_movies movies in
   (*let keywords = parse_keywords keywords_movie in*)
