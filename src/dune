@@ -2,24 +2,28 @@
   (name movie)
   (modules movie rating)
   (wrapped false)
-  (libraries core)
+  (libraries core csv)
   (preprocess
     (pps ppx_deriving.show ppx_deriving.ord bisect_ppx)))
 
-; (library
-;   (name rating)
-;   (modules rating)
-;   (libraries core)
-;   (preprocess
-;     (pps ppx_deriving.show ppx_deriving.ord bisect_ppx)))
+
 
 (library
   (name data_preprocessing)
   (modules data_preprocessing)
-  (libraries csv yojson movie)
+  (libraries csv yojson movie core)
   (preprocess
     (pps ppx_deriving.show ppx_deriving.ord bisect_ppx))
 )
+
+(library
+  (name demographic_mode)
+  (modules demographic_mode)
+  (libraries core owl data_preprocessing)
+  (preprocess 
+    (pps ppx_deriving.show ppx_deriving.ord bisect_ppx))
+)
+
 
 (library
   (name content_based_mode)
@@ -29,10 +33,6 @@
     (pps bisect_ppx))
 )
   
-(library
-  (name demographic_mode)
-  (modules demographic_mode)
-  (libraries owl movie))
 
 (executable
   (name main)
@@ -40,5 +40,11 @@
   (libraries
     core_unix.command_unix
     data_preprocessing
-    content_based_mode)
+    content_based_mode
+    demographic_mode
+    movie
+    core
+    )
   (preprocess (pps ppx_jane)))
+
+ 

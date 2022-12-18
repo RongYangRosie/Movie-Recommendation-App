@@ -1,5 +1,5 @@
 open Core
-open Yojson
+(*open Yojson*)
 (* open Movie *)
 
 let parse_credit (f: string): Movie.credits =
@@ -9,8 +9,7 @@ let parse_credit (f: string): Movie.credits =
       Csv.associate header data |>
       List.map ~f:(fun row ->
         let lookup key = List.Assoc.find_exn row ~equal:String.equal key in
-        ({ movie_id = lookup "movie_id" |> int_of_string; 
-          title = lookup "title";
+        ({ id = lookup "id" |> int_of_string; 
           cast = lookup "cast";
           crew = lookup "crew"} : Movie.credit ) )
 
@@ -24,18 +23,6 @@ let parse_rating (f: string): Rating.t =
         ({ userid = lookup "userId" |> int_of_string; 
            movieid = lookup "movieId" |> int_of_string;
            rating = lookup "rating" |> float_of_string } : Rating.rating ))
-
-let parse_keywords(f: string): Movie.keywords_movie =
-  match Csv.load f with
-  | [] -> assert false
-  | header :: data ->
-     Csv.associate header data |>
-     List.map ~f:(fun row ->
-       let lookup key = List.Assoc.find_exn row ~equal:String.equal key in
-       ({
-           id = lookup "id" |> int_of_string;
-           keyword = lookup "keywords";
-       }:Movie.keyword_file))
 
 let parse_movies (f: string): Movie.movies =
   match Csv.load f with
@@ -67,8 +54,9 @@ let parse_movies (f: string): Movie.movies =
         vote_count = lookup "vote_count" |> float_of_string }: Movie.basic_movie))
 
 
-let find_list str key = 
-  match Basic.from_string str with
+(*let find_list str key = 
+  let clean_str = String.tr ~target: '\'' ~replacement: '"' str in
+  match Basic.from_string clean_str with
   | `List l ->
       List.map l ~f:(function
         | `Assoc m -> 
@@ -110,20 +98,21 @@ let  load_movie_data(credits: string) (movies: string)(*(keywords_movie: string)
     ~init:(Map.empty (module Int)) movies
   in
   let result = 
-    List.map credits ~f:(fun { movie_id; title; cast; crew } ->
+    List.map credits ~f:(fun { id;  cast; crew } ->
       let cast = find_list cast "name" in
-      let movie = Map.find_exn movies_map movie_id in
+      let movie = Map.find_exn movies_map id in
       let genres = find_list movie.genres "name" in
       (*let keyword = find_list keywords.keyword "name" in*)
       match find_opt crew ("job", "Director") "name" with
       | None -> None
       | Some director ->
-          Some ({ movie_id = movie_id; title; cast; director; 
+          Some ({ movie_id = id; title =  movie.title; cast; director; 
           keywords = ["test1";"test2"]; genres; overview = movie.overview; 
           popularity = movie.popularity; vote_count = movie.vote_count; 
           vote_average = movie.vote_average }: Movie.movie) )
   in
   List.filter_map result ~f:(fun x -> x)
+  *)
 
 
   

@@ -17,8 +17,7 @@ type t = movie list [@@deriving show]
 
 type credit =
   {
-    movie_id: int;
-    title: string;
+    id:int;
     cast: string;
     crew: string;
   } [@@deriving show]
@@ -51,14 +50,14 @@ type basic_movie =
 
 type movies = basic_movie list [@@deriving show]
 
-type keyword_file =
+(*type keyword =
 {
    id: int;
    keyword: string; 
 } [@@deriving show]
 
-type keywords_movie = keyword_file list [@@deriving show]
-
+type keywords = keyword list [@@deriving show]
+*)
 let find_idx_by_movieid ~(movie_list: t) (req_id: int): int =
   let idx, _ = List.findi_exn ~f:(fun _ elt -> elt.movie_id = req_id) movie_list in idx
 

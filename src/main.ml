@@ -29,12 +29,13 @@ let command =
     Command_unix.run command*)
 
 let _ =
-  let movies = Data_preprocessing.load_movie_data "./dataset/tmdb_5000_credits.csv" "./dataset/tmdb_5000_movies.csv" in (*"./dataset/movies_metadata.csv" in*)
+  let movies = Data_preprocessing.load_movie_data "./dataset/credits.csv" "./dataset/movies_metadata.csv" (*"./dataset/keywords.csv" in*) (*"./dataset/test3.csv"*) in
   match Sys.argv.(1) with
   | "rating" ->
     Data_preprocessing.parse_rating "./dataset/ratings_small.csv" |>
     Rating.show |> print_endline
   | "movie" -> 
+    Data_preprocessing.parse_movies "./dataset/movie.csv" |>
     Movie.show movies |> print_endline
   | "average" -> 
       vote_average movies |> Printf.printf "%f\n"                            (* 1 *)
@@ -51,4 +52,5 @@ let _ =
       Demographic_mode.get_recommendations movies (int_of_string Sys.argv.(2)) |> 
       Movie.show |> print_endline
   | _ -> failwith "invalid input"
+  
 
