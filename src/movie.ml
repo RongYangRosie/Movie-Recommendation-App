@@ -1,23 +1,23 @@
 open Core
 
 type movie = {
-    movie_id: int;
-    title: string;
-    cast: string list;
-    director: string;
-    keywords: string list;
-    genres: string list;
-    overview: string;    
-    popularity: float;
-    vote_count: int;
-    vote_average: float;
+  movie_id: int;
+  title: string;
+  cast: string list;
+  director: string;
+  keywords: string list;
+  genres: string list;
+  overview: string;    
+  popularity: float;
+  vote_count: float;
+  vote_average: float;
 } [@@deriving show]
 
 type t = movie list [@@deriving show]
 
 type credit =
   {
-    movie_id: string;
+    movie_id: int;
     title: string;
     cast: string;
     crew: string;
@@ -27,18 +27,37 @@ type credits = credit list [@@deriving show]
 
 type basic_movie =
   {
+    budget: string;
     genres: string;
-    id: string;
-    keywords: string;
+    homepage: string;
+    id: int;
+    (*keywords: string;*)
+    original_language: string;
+    original_title: string;
     overview: string;
-    popularity: string;
+    popularity: float;
+    production_companies: string;
+    production_countries: string;
+    release_date: string;
+    revenue: string;
+    runtime: string;
+    spoken_languages: string;
+    status: string;
+    tagline: string;
     title: string;
-    vote_average: string;
-    vote_count: string;
+    vote_average: float;
+    vote_count: float;
   } [@@deriving show]
 
 type movies = basic_movie list [@@deriving show]
 
+type keyword_file =
+{
+   id: int;
+   keyword: string; 
+} [@@deriving show]
+
+type keywords_movie = keyword_file list [@@deriving show]
 
 let find_idx_by_movieid ~(movie_list: t) (req_id: int): int =
   let idx, _ = List.findi_exn ~f:(fun _ elt -> elt.movie_id = req_id) movie_list in idx
