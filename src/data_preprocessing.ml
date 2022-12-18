@@ -124,35 +124,3 @@ let  load_movie_data(credits: string) (movies: string): Movie.t =
           vote_average = movie.vote_average }: Movie.movie) )
   in
   List.filter_map result ~f:(fun x -> x)
-(*
-  let  load_movie_data(credits: string) (movies: string)(keywords: string): Movie.t =
-  let credits = parse_credit credits in
-  let movies = parse_movies movies in
-  let keywords = parse_keywords keywords in
-  let movies_map = List.fold
-    ~f:(fun acc ({ id; _ } as movie) -> Map.add_exn acc ~key:id ~data:movie) 
-    ~init:(Map.empty (module Int)) movies
-  in
-  let medium_result = 
-    List.map credits ~f:(fun { movie_id; title; cast; crew } ->
-      let cast = find_list cast "name" in
-      let movie = Map.find_exn movies_map movie_id in
-      let genres = find_list movie.genres "name" in
-      match find_opt crew ("job", "Director") "name" with
-      | None -> None
-      | Some director ->
-          Some ({ movie_id = movie_id; title; cast; director; 
-           genres; overview = movie.overview; keywords = [];
-          popularity = movie.popularity; vote_count = movie.vote_count; 
-          vote_average = movie.vote_average }: Movie.movie) )
-  in
-  let result =
-     List.map keywords ~f:(fun {id; keyword} ->
-      let keyword = find_list keyword "name" in
-      Some ({ movie_id = movie.movie_id; title; cast; director; 
-           genres; overview = movie.overview; keywords = keyword;
-          popularity = movie.popularity; vote_count = movie.vote_count; 
-          vote_average = movie.vote_average }: Movie.movie) )
-  in
-  List.filter_map result ~f:(fun x -> x) 
-   *)
