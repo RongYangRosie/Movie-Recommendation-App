@@ -1,72 +1,67 @@
-(* open Movie *)
-
-(*type movie_wr_rating = {
-  movie_id : int;
-  title : string;
-  cast : string list;
-  director : string;
-  keywords : string list;
-  genres : string list;
-  overview : string;
-  popularity : float;
-  vote_count : int;
-  vote_average : float;
-  wr_score: float
-}
-*)
-(*calculate mean value(C) of the all movies' vote_average, C is the mean vote across the whole report*)
-(* let vote_average_mean movie_list =
-  List.map (fun {vote_average ; _ } -> float_of_string vote_average) movie_list |>
-  List.fold_left ( +. ) 0. |>
-  (fun sum -> sum /. (List.length movie_list |> float_of_int)) *)
- 
-(*calculate quantile value(m), m is the minimum votes required to be listed in the chartm is the minimum votes required to be listed in the chart*)
-(* let quantile movie_list =
-  let vote_counts = List.map (fun { vote_count; _ } -> float_of_string vote_count) movie_list in
-  Owl_stats.quantile vote_counts 0.9 *)
- 
-(*filter all movies whose vote_count is greater than 0.9 quantile*)
-(* let filter_m movie_list =
-  let m = quantile results in
-  List.filter
-  (fun { vote_count; _ } -> float_of_string vote_count >= m)
-  movie_list *)
-
-(*
-
-val calculate_WR movie_list: movie list ->movie_wr_rating list
-
-(*
-  calculate Weighted Rating = (v/(v+m) *R) + (m/(v+m) *C) of all movies   
-  @param: movie list, a list of movie record
-  @ret: movie list - movie_wr_rating list
-
-*)
-
-val popularity_sort: movie list -> movie list
-(*
-  sort all movies by popularity 
-  @param: movie list, a list of movie record
-  @ret: movie list - a list of movie record after sorting
-*)
+open Core
 
 
-
-val wr_sort: movie list -> movie list
-(*
-  sort all movies by WR
-  @param: movie list, a list of movie record
-  @ret: movie list - a list of movie record after sorting
-*)
-
-val wr_popularity_sort: movie list -> movie list ->movie list
-(*
-  sort all movies by WR, popularity
-  @param: movie list, a list of movie record
-  @ret: movie list - a list of movie record after sorting
-*)
-
-*)
+let vote_average (l: Movie.t): float =
+  let sum =
+    List.map l ~f:(fun { vote_average; _ } -> vote_average) |>
+    List.fold ~init:0. ~f:( +. )
+  in
+  let len = List.length l in
+  Float.O.(sum / of_int len)
 
 
+let quantile (l: Movie.t): float =
+  let vote_counts =
+    List.map l ~f:(fun { vote_count; _} -> vote_count) |>
+    Array.of_list
+  in
+  Owl_stats.quantile vote_counts 0.9
 
+
+let filter_vote_count (l: Movie.t): Movie.t = 
+  let m = quantile l in
+  List.filter l ~f:(fun { vote_count; _ } -> Float.compare vote_count m >= 0)
+
+
+let sort_by_weighted_rating (l: Movie.t): Movie.t =
+  let c = vote_average l in
+  let m = quantile l in
+  let weighted_rating ({ vote_count; vote_average; _ }: Movie.movie) =
+    let r = vote_average in
+    let v = vote_count in
+    Float.O.(v / (v + m) * r + m / (v + m) * c)
+  in
+  List.sort l ~compare:(fun (x: Movie.movie) y ->
+    let x = weighted_rating x in
+    let y = weighted_rating y in
+    Float.compare x y) |>
+  List.rev
+
+
+let sort_by_popularity (l: Movie.t): Movie.t =
+  List.sort l ~compare:(fun x y -> Float.compare x.popularity y.popularity) |>
+  List.rev
+
+
+let sort (l: Movie.t): Movie.t =
+  let lwr = sort_by_weighted_rating l |> List.mapi ~f:(fun i m -> i + 1, ((m: Movie.movie).movie_id)) in
+  let lp = sort_by_popularity l |> List.mapi ~f:(fun i m -> i + 1, m) in
+  let map = 
+    List.fold lwr ~init:(Map.empty(module Int)) ~f:(fun acc (idx, movie_id) ->
+      Map.add_exn acc ~key:movie_id ~data:idx)
+  in
+  let newl =
+    List.map lp ~f:(fun (idx1, ({movie_id; _} as movie)) ->
+      let idx2 = Map.find_exn map movie_id in
+      let idx = (idx1 + idx2) / 2 in
+      (idx, movie))
+  in
+  List.sort newl ~compare:(fun (idx1, { vote_count = count1; _ }) (idx2, { vote_count = count2; _ }) ->
+    let cmp = Int.compare idx1 idx2 in
+    if cmp <> 0 then cmp
+    else Float.compare count1 count2) |>
+  List.rev |>
+  List.map ~f:snd
+
+
+let  get_recommendations (l: Movie.t) (n: int): Movie.t = List.take l n
