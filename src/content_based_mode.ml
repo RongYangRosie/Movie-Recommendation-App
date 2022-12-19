@@ -46,6 +46,14 @@ type t = movie list *)
 
 ] *)
 
+let combine_field (m: movie) : string = 
+  [
+    combine_helper m.keywords;
+    combine_helper m.cast;
+    clean_string m.director;
+    combine_helper m.genres;
+  ] |> String.concat ~sep:" "
+
 let generate_tfidfvector (movie_list: t) = 
   let overview_arr = Numpy.Ndarray.of_string_list @@ List.map ~f:(fun m -> m.overview) movie_list in 
   let tfidf_vectorizer = TfidfVectorizer.create 

@@ -9,14 +9,6 @@ let clean_string (s:string) : string =
 let combine_helper (str_list: string list) : string = 
   str_list |> List.map ~f:clean_string |> Fn.flip List.take 3 |> String.concat ~sep:" "
 
-let combine_field (m: movie) : string = 
-  [
-    combine_helper m.keywords;
-    combine_helper m.cast;
-    clean_string m.director;
-    combine_helper m.genres;
-  ] |> String.concat ~sep:" "
-
 let shuffle (lst: 'a list) : 'a list =
   List.map ~f:(fun elt -> (Random.bits (), elt)) lst
   |> List.sort ~compare:(fun (r1, _) -> fun (r2, _) -> (Int.compare r1 r2))

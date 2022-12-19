@@ -39,7 +39,7 @@ type basic_movie =
     vote_count: int;
   } [@@deriving show]
 
-type movies = basic_movie list [@@deriving show]
+type movies = movie list [@@deriving show]
 
 let find_idx_by_movieid ~(movie_list: t) (req_id: int): int =
   let idx, _ = List.findi_exn ~f:(fun _ elt -> elt.movie_id = req_id) movie_list in idx
