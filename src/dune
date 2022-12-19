@@ -1,44 +1,77 @@
 (library
   (name movie)
-  (modules movie rating)
-  (wrapped false)
+  (modules movie)
   (libraries core)
   (preprocess
     (pps ppx_deriving.show ppx_deriving.ord bisect_ppx)))
 
-; (library
-;   (name rating)
-;   (modules rating)
-;   (libraries core)
-;   (preprocess
-;     (pps ppx_deriving.show ppx_deriving.ord bisect_ppx)))
+(library
+  (name rating)
+  (modules rating)
+  (preprocess
+    (pps ppx_deriving.show ppx_deriving.ord bisect_ppx)))
+
+(library
+  (name utils)
+  (modules utils)
+  (libraries core movie rating)
+  (preprocess 
+    (pps bisect_ppx))
+)
 
 (library
   (name data_preprocessing)
   (modules data_preprocessing)
-  (libraries csv yojson movie)
+  (libraries csv yojson movie rating)
   (preprocess
     (pps ppx_deriving.show ppx_deriving.ord bisect_ppx))
-)
-
-(library
-  (name content_based_mode)
-  (modules content_based_mode)
-  (libraries core sklearn movie)
-  (preprocess 
-    (pps bisect_ppx))
 )
   
 (library
   (name demographic_mode)
   (modules demographic_mode)
-  (libraries owl movie))
+  (libraries core owl data_preprocessing)
+  (preprocess 
+    (pps bisect_ppx))
+)
+
+(library
+  (name content_based_mode)
+  (modules content_based_mode)
+  (libraries core sklearn movie utils)
+  (preprocess 
+    (pps bisect_ppx))
+)
+
+(library
+  (name collaborative_mode)
+  (modules collaborative_mode)
+  (libraries core movie rating utils)
+  (preprocess 
+    (pps bisect_ppx))
+)
 
 (executable
   (name main)
   (modules main)
   (libraries
-    core_unix.command_unix
+    core
+    core_unix
+    core_unix.sys_unix
+    movie
+    rating
+    utils
     data_preprocessing
-    content_based_mode)
+    demographic_mode
+    content_based_mode
+    collaborative_mode
+    inquire)
+  (preprocess (pps ppx_jane)))
+
+(executable
+  (name show)
+  (modules show)
+  (libraries
+    core
+    format)
   (preprocess (pps ppx_jane)))

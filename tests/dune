@@ -3,6 +3,10 @@
   (libraries
     core
     ounit2
-    content_based_mode
     movie
+    rating
+    utils
+    demographic_mode
+    content_based_mode
+    collaborative_mode
   ))
