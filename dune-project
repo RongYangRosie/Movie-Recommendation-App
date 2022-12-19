@@ -7,14 +7,14 @@
 (maintainers "test@test.com" )
 
 (package
- (name rmovie) ; put in your own project name here
+ (name rmovie) 
  (synopsis "An OCaml library for Movie Recommendation")
  (description "This is a movie recommendation Application with 3 recommender mode")
  (depends
   (core
-   (>= 0.15.0)) ; `opam list core` will display which version of core you have
+   (>= 0.15.0)) 
   (ounit2
-   (<= 2.2.6)) ; for each opam dependency list the version
+   (<= 2.2.6)) 
   (core_unix
    (>= 0.15.0))
   (csv
