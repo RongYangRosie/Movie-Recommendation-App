@@ -7,7 +7,7 @@
     src/data_preprocessing.ml
     src/demographic_mode.ml
     src/content_based_mode.ml
-    src/content_based_mode.ml
+    src/collaborative_mode.ml
     src/utils.ml
     src/dune
     tests/tests.ml
