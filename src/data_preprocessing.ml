@@ -89,21 +89,6 @@ let parse_movies (f: string): Movie.basic_movie list =
           vote_count = lookup "vote_count" |> int_of_string }: Movie.basic_movie)) |>
     List.filter_map ~f:(function x -> x)
 
-(*let parse_keyword (f: string): Movie.keywords =
-  match Csv.load f with
-  | [] -> assert false
-  | header :: data ->
-      Csv.associate header data |>
-      List.map ~f:(fun row ->
-        let lookup key = List.Assoc.find_exn row ~equal:String.equal key in
-        ({ id = lookup "id" |> int_of_string; 
-          keyword = lookup "keywords"}:Movie.keyword))
-
-
-let lookup_keyword (keywords: Movie.keywords) (id: int): string = 
-  let value = List.find_exn keywords ~f:(fun k -> k.id = id) in
-  value.keyword*)
-
 (*
    parse a json string, and  get the value of the corresponding field
    @param: string - field's value,  string - subfield's name
@@ -177,10 +162,6 @@ let  load_movie_data(credits: string) (movies: string)(*(keywords: string)*): Mo
           vote_average = movie.vote_average }: Movie.movie) )
   in
   List.filter_map result ~f:(fun x -> x)
-
-
-  
-
 
 let load_rating_data (filename: string): Rating.t =
   match Csv.load filename with

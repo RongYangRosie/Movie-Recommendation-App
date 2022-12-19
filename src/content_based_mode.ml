@@ -4,48 +4,6 @@ open Np
 open Movie
 open Utils
 
-(* type movie = {
-  movie_id: int;
-  title: string;
-  cast: string list;
-  director: string;
-  keywords: string list;
-  genres: string list;
-  overview: string;
-  popularity: float;
-  vote_count: int;
-  vote_average: float;
-}
-type t = movie list *)
-
-(* let movie_list = [
-  {
-    movie_id = 1;
-    title = "Avatar";
-    cast = ["Sam Worthington"; "Zoe Saldana"; "Sigourney Weaver"];
-    director = "James Cameron";
-    keywords = ["culture clash"; "future"; "space war"];
-    genres =  ["Action"; "Adventure"; "Fantasy"];
-    overview = "In the 22nd century, a paraplegic Marine is dispatched to the moon Pandora on a unique mission, but becomes torn between following orders and protecting an alien civilization.";
-    popularity = 150.437577;
-    vote_count = 11800;
-    vote_average = 7.2;
-  };
-  {
-    movie_id = 2;
-    title = "Spectre";
-    cast = ["Daniel Craig"; "Christoph Waltz"; "Léa Seydoux"];
-    director = "Sam Mendes";
-    keywords = ["spy"; "based on novel"; "secret agent"];
-    genres = ["Action"; "Adventure"; "Crime"];
-    overview = "A cryptic message from Bond's past sends him on a trail to uncover a sinister organization. While M battles political forces to keep the secret service alive, Bond peels back the layers of deceit to reveal the terrible truth behind SPECTRE.";
-    popularity = 107.376788;
-    vote_count = 4466;
-    vote_average = 6.3;
-  };
-
-] *)
-
 let combine_field (m: movie) : string = 
   [
     combine_helper m.keywords;

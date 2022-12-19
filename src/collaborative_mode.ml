@@ -4,7 +4,7 @@ open Utils
 
 let learningRate = 0.01;;
 let regularization = 0.05;;
-let factorNum = 3;;
+let factorNum = 30;;
 
 type svd_param = {
   avg: float;
