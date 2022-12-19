@@ -1,6 +1,24 @@
 open Core
-(*open Yojson*)
+open Yojson
 (* open Movie *)
+
+
+let rec remove_dup (l: Movie.basic_movie list) = match l with
+  | [] -> []
+  | h :: t -> 
+      let rest = remove_dup t in 
+      if List.mem t h ~equal:(fun x y -> x.id = y.id) 
+      then rest 
+      else h :: rest
+
+
+let rec delete_null(l: Movie.basic_movie list) = match l with
+  | [] -> []
+  | h :: t ->
+      match h.genres with
+      | "" -> delete_null t
+      | _ -> h :: delete_null t
+
 
 let parse_credit (f: string): Movie.credits =
   match Csv.load f with
@@ -9,7 +27,8 @@ let parse_credit (f: string): Movie.credits =
       Csv.associate header data |>
       List.map ~f:(fun row ->
         let lookup key = List.Assoc.find_exn row ~equal:String.equal key in
-        ({ id = lookup "id" |> int_of_string; 
+        ({ movie_id = lookup "movie_id" |> int_of_string; 
+          title = lookup "title";
           cast = lookup "cast";
           crew = lookup "crew"} : Movie.credit ) )
 
@@ -24,39 +43,47 @@ let parse_rating (f: string): Rating.t =
            movieid = lookup "movieId" |> int_of_string;
            rating = lookup "rating" |> float_of_string } : Rating.rating ))
 
-let parse_movies (f: string): Movie.movies =
+
+let parse_movies (f: string): Movie.basic_movie list =
+  match Csv.load f with
+  | [] -> assert false
+  | header :: data ->
+     Csv.associate header data |>
+     List.map ~f:(fun row ->
+       let lookup key = List.Assoc.find_exn row ~equal:String.equal key in
+        match float_of_string (lookup "vote_count") with
+        | exception (Failure _) -> None
+        | _ ->
+          Some ({ 
+          genres = lookup "genres";
+          homepage = lookup "homepage";
+          id = lookup "id" |> int_of_string;
+          keywords = lookup "keywords";
+          overview = lookup "overview";
+          popularity = lookup "popularity" |> float_of_string;
+          release_date = lookup "release_date";
+          title = lookup "title";
+          vote_average = lookup "vote_average" |> float_of_string;
+          vote_count = lookup "vote_count" |> int_of_string }: Movie.basic_movie)) |>
+    List.filter_map ~f:(function x -> x)
+
+(*let parse_keyword (f: string): Movie.keywords =
   match Csv.load f with
   | [] -> assert false
   | header :: data ->
       Csv.associate header data |>
       List.map ~f:(fun row ->
         let lookup key = List.Assoc.find_exn row ~equal:String.equal key in
-        ({ 
-        budget = lookup "budget"; 
-        genres = lookup "genres";
-        homepage = lookup "homepage";
-        id = lookup "id" |> int_of_string;
-        (*keywords = lookup "keywords";*)
-        original_language = lookup "original_language";
-        original_title = lookup "original_title";
-        overview = lookup "overview";
-        popularity = lookup "popularity" |> float_of_string;
-        production_companies = lookup "production_companies";
-        production_countries = lookup "production_countries";
-        release_date = lookup "release_date";
-        revenue = lookup "revenue";
-        runtime = lookup "runtime";
-        spoken_languages = lookup "spoken_languages";
-        status = lookup "status";
-        tagline = lookup "tagline";
-        title = lookup "title";
-        vote_average = lookup "vote_average" |> float_of_string;
-        vote_count = lookup "vote_count" |> float_of_string }: Movie.basic_movie))
+        ({ id = lookup "id" |> int_of_string; 
+          keyword = lookup "keywords"}:Movie.keyword))
 
 
-(*let find_list str key = 
-  let clean_str = String.tr ~target: '\'' ~replacement: '"' str in
-  match Basic.from_string clean_str with
+let lookup_keyword (keywords: Movie.keywords) (id: int): string = 
+  let value = List.find_exn keywords ~f:(fun k -> k.id = id) in
+  value.keyword*)
+
+let find_list str key = 
+  match Basic.from_string str with
   | `List l ->
       List.map l ~f:(function
         | `Assoc m -> 
@@ -66,6 +93,7 @@ let parse_movies (f: string): Movie.movies =
             end
         | _ -> assert false)
   | _ -> assert false
+
 
 let find_opt str (k, v) name =
   let map = 
@@ -89,30 +117,30 @@ let find_opt str (k, v) name =
       end
   | Some _ -> None
 
-let  load_movie_data(credits: string) (movies: string)(*(keywords_movie: string)*): Movie.t =
+let  load_movie_data(credits: string) (movies: string)(*(keywords: string)*): Movie.t =
   let credits = parse_credit credits in
   let movies = parse_movies movies in
-  (*let keywords = parse_keywords keywords_movie in*)
+  (*let keywords = parse_keywords keywords in*)
   let movies_map = List.fold
     ~f:(fun acc ({ id; _ } as movie) -> Map.add_exn acc ~key:id ~data:movie) 
     ~init:(Map.empty (module Int)) movies
   in
   let result = 
-    List.map credits ~f:(fun { id;  cast; crew } ->
+    List.map credits ~f:(fun { movie_id; title; cast; crew } ->
       let cast = find_list cast "name" in
-      let movie = Map.find_exn movies_map id in
+      let movie = Map.find_exn movies_map movie_id in
       let genres = find_list movie.genres "name" in
-      (*let keyword = find_list keywords.keyword "name" in*)
+      let keywords = find_list movie.keywords "name" in
+      (*let keyword = find_list (lookup_keyword keywords movie_id) "name" in*)
       match find_opt crew ("job", "Director") "name" with
       | None -> None
       | Some director ->
-          Some ({ movie_id = id; title =  movie.title; cast; director; 
-          keywords = ["test1";"test2"]; genres; overview = movie.overview; 
+          Some ({ movie_id = movie_id; title; cast; director; 
+          keywords = keywords; genres; overview = movie.overview; 
           popularity = movie.popularity; vote_count = movie.vote_count; 
           vote_average = movie.vote_average }: Movie.movie) )
   in
   List.filter_map result ~f:(fun x -> x)
-  *)
 
 
   

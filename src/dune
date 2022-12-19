@@ -8,10 +8,11 @@
 
 
 
+
 (library
   (name data_preprocessing)
   (modules data_preprocessing)
-  (libraries csv yojson movie core)
+  (libraries csv yojson movie)
   (preprocess
     (pps ppx_deriving.show ppx_deriving.ord bisect_ppx))
 )
@@ -19,7 +20,7 @@
 (library
   (name demographic_mode)
   (modules demographic_mode)
-  (libraries core owl data_preprocessing)
+  (libraries core owl movie data_preprocessing)
   (preprocess 
     (pps ppx_deriving.show ppx_deriving.ord bisect_ppx))
 )
@@ -43,8 +44,5 @@
     content_based_mode
     demographic_mode
     movie
-    core
     )
   (preprocess (pps ppx_jane)))
-
- 

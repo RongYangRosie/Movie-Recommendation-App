@@ -9,7 +9,7 @@ type movie = {
   genres: string list;
   overview: string;    
   popularity: float;
-  vote_count: float;
+  vote_count: int;
   vote_average: float;
 } [@@deriving show]
 
@@ -17,7 +17,8 @@ type t = movie list [@@deriving show]
 
 type credit =
   {
-    id:int;
+    movie_id: int;
+    title: string;
     cast: string;
     crew: string;
   } [@@deriving show]
@@ -26,29 +27,20 @@ type credits = credit list [@@deriving show]
 
 type basic_movie =
   {
-    budget: string;
     genres: string;
     homepage: string;
     id: int;
-    (*keywords: string;*)
-    original_language: string;
-    original_title: string;
+    keywords: string;
     overview: string;
     popularity: float;
-    production_companies: string;
-    production_countries: string;
     release_date: string;
-    revenue: string;
-    runtime: string;
-    spoken_languages: string;
-    status: string;
-    tagline: string;
     title: string;
     vote_average: float;
-    vote_count: float;
+    vote_count: int;
   } [@@deriving show]
 
 type movies = basic_movie list [@@deriving show]
+
 
 (*type keyword =
 {
@@ -56,8 +48,9 @@ type movies = basic_movie list [@@deriving show]
    keyword: string; 
 } [@@deriving show]
 
-type keywords = keyword list [@@deriving show]
-*)
+type keywords = keyword list [@@deriving show]*)
+
+
 let find_idx_by_movieid ~(movie_list: t) (req_id: int): int =
   let idx, _ = List.findi_exn ~f:(fun _ elt -> elt.movie_id = req_id) movie_list in idx
 

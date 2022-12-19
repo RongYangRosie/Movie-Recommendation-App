@@ -12,15 +12,15 @@ let vote_average (l: Movie.t): float =
 
 let quantile (l: Movie.t): float =
   let vote_counts =
-    List.map l ~f:(fun { vote_count; _} -> vote_count) |>
+    List.map l ~f:(fun { vote_count ; _} -> float_of_int vote_count) |>
     Array.of_list
   in
-  Owl_stats.quantile vote_counts 0.9
+  Owl_stats.quantile vote_counts  0.9
 
 
 let filter_vote_count (l: Movie.t): Movie.t = 
   let m = quantile l in
-  List.filter l ~f:(fun { vote_count; _ } -> Float.compare vote_count m >= 0)
+  List.filter l ~f:(fun { vote_count; _ } -> Float.compare (float_of_int vote_count) m >= 0)
 
 
 let sort_by_weighted_rating (l: Movie.t): Movie.t =
@@ -28,7 +28,7 @@ let sort_by_weighted_rating (l: Movie.t): Movie.t =
   let m = quantile l in
   let weighted_rating ({ vote_count; vote_average; _ }: Movie.movie) =
     let r = vote_average in
-    let v = vote_count in
+    let v = float_of_int vote_count in
     Float.O.(v / (v + m) * r + m / (v + m) * c)
   in
   List.sort l ~compare:(fun (x: Movie.movie) y ->
@@ -59,9 +59,9 @@ let sort (l: Movie.t): Movie.t =
   List.sort newl ~compare:(fun (idx1, { vote_count = count1; _ }) (idx2, { vote_count = count2; _ }) ->
     let cmp = Int.compare idx1 idx2 in
     if cmp <> 0 then cmp
-    else Float.compare count1 count2) |>
+    else Int.compare count1 count2) |>
   List.rev |>
   List.map ~f:snd
 
 
-let  get_recommendations (l: Movie.t) (n: int): Movie.t = List.take l n
+let  get_recommendations (l: Movie.t) (n: int): Movie.t = List.take (sort l) n
