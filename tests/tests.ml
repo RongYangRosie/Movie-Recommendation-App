@@ -3,6 +3,7 @@ open OUnit2
 open Movie
 open Rating
 open Utils
+(* open Demographic_mode *)
 open Content_based_mode
 open Collaborative_mode
 
@@ -283,5 +284,3 @@ let mode3_tests =
 (* Combine all module tests *)
 let series = 
   "Whole Test" >::: [utils_tests; mode2_tests; mode3_tests]
-  
-let () = run_test_tt_main series

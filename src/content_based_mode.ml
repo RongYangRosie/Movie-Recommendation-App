@@ -2,6 +2,7 @@ open Core
 open Sklearn.Feature_extraction.Text
 open Np
 open Movie
+open Utils
 
 (* type movie = {
   movie_id: int;
@@ -45,21 +46,6 @@ type t = movie list *)
 
 ] *)
 
-(* Change the string to lowercase, and remove the whitespace *)
-let clean_string (s:string) : string = 
-  s |> String.lowercase |> String.split ~on:' ' |> String.concat
-
-let combine_helper (str_list: string list) : string = 
-  str_list |> List.map ~f:clean_string |> Fn.flip List.take 3 |> String.concat ~sep:" "
-
-let combine_field (m: movie) : string = 
-  [
-    combine_helper m.keywords;
-    combine_helper m.cast;
-    clean_string m.director;
-    combine_helper m.genres;
-  ] |> String.concat ~sep:" "
-
 let generate_tfidfvector (movie_list: t) = 
   let overview_arr = Numpy.Ndarray.of_string_list @@ List.map ~f:(fun m -> m.overview) movie_list in 
   let tfidf_vectorizer = TfidfVectorizer.create 
@@ -86,9 +72,10 @@ let type_converter (arr) : float list list =
   Py.Sequence.to_list_map (Py.Sequence.to_list_map (Py.Float.to_float)) 
 
 let calculate_cosine_similarity (movie_list: t) : float list list = 
-  let combined_vector = [generate_tfidfvector; generate_countvector] 
-  |> List.map ~f:(fun f -> f movie_list)
-  |> combine_vector
+  let combined_vector = 
+    [generate_tfidfvector; generate_countvector] 
+    |> List.map ~f:(fun f -> f movie_list)
+    |> combine_vector
   in Obj.of_pyobject @@ Sklearn.Metrics.Pairwise.cosine_similarity ~x:combined_vector () |> type_converter
 
 let desc_sort_similarity (sim: float list list) (idx: int) : (int * float) list = 
@@ -97,9 +84,9 @@ let desc_sort_similarity (sim: float list list) (idx: int) : (int * float) list 
   |> List.sort ~compare:(fun (_, sim_a) -> fun (_, sim_b) -> Float.descending sim_a sim_b) 
   |> List.tl_exn (* remove the first item, i.e., itself *)
 
-let get_recommendations ~(title: string) ~(n: int) ~(movie_list: t) : string list = 
+let get_recommendations ~(title: string) ~(n: int) ~(movie_list: t) : Movie.t = 
   let sim = calculate_cosine_similarity movie_list in 
   let idx = find_movieid_by_title ~movie_list title |> find_idx_by_movieid ~movie_list in 
   desc_sort_similarity sim idx
   |> Fn.flip List.take n
-  |> List.map ~f:(fun (i, _) -> find_title_by_idx ~movie_list i)
+  |> List.map ~f:(fun (i, _) -> find_movie_by_idx ~movie_list i)

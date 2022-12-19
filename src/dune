@@ -22,7 +22,7 @@
 (library
   (name data_preprocessing)
   (modules data_preprocessing)
-  (libraries csv yojson movie rating)
+  (libraries core csv yojson movie rating)
   (preprocess
     (pps ppx_deriving.show ppx_deriving.ord bisect_ppx))
 )
@@ -66,12 +66,4 @@
     content_based_mode
     collaborative_mode
     inquire)
-  (preprocess (pps ppx_jane)))
-
-(executable
-  (name show)
-  (modules show)
-  (libraries
-    core
-    format)
   (preprocess (pps ppx_jane)))

@@ -1,23 +1,23 @@
 open Core
 
 type movie = {
-    movie_id: int;
-    title: string;
-    cast: string list;
-    director: string;
-    keywords: string list;
-    genres: string list;
-    overview: string;    
-    popularity: float;
-    vote_count: int;
-    vote_average: float;
+  movie_id: int;
+  title: string;
+  cast: string list;
+  director: string;
+  keywords: string list;
+  genres: string list;
+  overview: string;    
+  popularity: float;
+  vote_count: int;
+  vote_average: float;
 } [@@deriving show]
 
 type t = movie list [@@deriving show]
 
 type credit =
   {
-    movie_id: string;
+    movie_id: int;
     title: string;
     cast: string;
     crew: string;
@@ -28,16 +28,27 @@ type credits = credit list [@@deriving show]
 type basic_movie =
   {
     genres: string;
-    id: string;
+    homepage: string;
+    id: int;
     keywords: string;
     overview: string;
-    popularity: string;
+    popularity: float;
+    release_date: string;
     title: string;
-    vote_average: string;
-    vote_count: string;
+    vote_average: float;
+    vote_count: int;
   } [@@deriving show]
 
 type movies = basic_movie list [@@deriving show]
+
+
+(*type keyword =
+{
+   id: int;
+   keyword: string; 
+} [@@deriving show]
+
+type keywords = keyword list [@@deriving show]*)
 
 
 let find_idx_by_movieid ~(movie_list: t) (req_id: int): int =

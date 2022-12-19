@@ -1,8 +1,0 @@
-(executable
-  (name main)
-  (libraries movie)
-  (modes byte exe))
-
-(env
-  (dev
-    (flags (:standard -warn-error -A))))
