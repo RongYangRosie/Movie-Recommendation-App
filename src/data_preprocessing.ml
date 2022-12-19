@@ -2,7 +2,11 @@ open Core
 open Yojson
 (* open Movie *)
 
-
+(*
+  delete duplicate movies which have same movie_id 
+  @param: basic_movie list 
+  @ret: basic_movie list 
+*)
 let rec remove_dup (l: Movie.basic_movie list) = match l with
   | [] -> []
   | h :: t -> 
@@ -11,7 +15,11 @@ let rec remove_dup (l: Movie.basic_movie list) = match l with
       then rest 
       else h :: rest
 
-
+(*
+   delete movies whose genres are empty
+   @param: basic_movie list 
+   @ret: basic_movie list 
+*)
 let rec delete_null(l: Movie.basic_movie list) = match l with
   | [] -> []
   | h :: t ->
@@ -19,7 +27,11 @@ let rec delete_null(l: Movie.basic_movie list) = match l with
       | "" -> delete_null t
       | _ -> h :: delete_null t
 
-
+(*
+   read credit data from tmdb_5000_credits.csv, and create a credit record list
+   @param: string - file name
+   @ret: credit list 
+*)
 let parse_credit (f: string): Movie.credits =
   match Csv.load f with
   | [] -> assert false
@@ -32,6 +44,11 @@ let parse_credit (f: string): Movie.credits =
           cast = lookup "cast";
           crew = lookup "crew"} : Movie.credit ) )
 
+(*
+   read rating data from ratings_small.csv, and create a rating record list
+   @param: string - file name
+   @ret: rating list 
+*)
 let parse_rating (f: string): Rating.t =
   match Csv.load f with
   | [] -> assert false
@@ -43,7 +60,11 @@ let parse_rating (f: string): Rating.t =
            movieid = lookup "movieId" |> int_of_string;
            rating = lookup "rating" |> float_of_string } : Rating.rating ))
 
-
+(*
+   read movies from ratings_small.csv, and create a rating record list
+   @param: string -file name
+   @ret: movie list 
+*)
 let parse_movies (f: string): Movie.basic_movie list =
   match Csv.load f with
   | [] -> assert false
@@ -82,7 +103,12 @@ let lookup_keyword (keywords: Movie.keywords) (id: int): string =
   let value = List.find_exn keywords ~f:(fun k -> k.id = id) in
   value.keyword*)
 
-let find_list str key = 
+(*
+   parse a json string, and  get the value of the corresponding field
+   @param: string - field's value,  string - subfield's name
+   @ret: string list - subfield's value
+*)
+let find_list (str:string) (key:string) :string list= 
   match Basic.from_string str with
   | `List l ->
       List.map l ~f:(function
@@ -94,8 +120,12 @@ let find_list str key =
         | _ -> assert false)
   | _ -> assert false
 
-
-let find_opt str (k, v) name =
+(*
+   Parse the json string and obtain the value of the corresponding field while meeting two conditions
+   @param: string - field's value,  (string * string) - subfield's name and value,    string - subfield's name
+   @ret: string option - subfield's value or none
+*)
+let find_opt (str:string) (k, v) (name:string) : string option =
   let map = 
     match Basic.from_string str with
     | `List l ->
@@ -117,6 +147,11 @@ let find_opt str (k, v) name =
       end
   | Some _ -> None
 
+(*
+   utilize CSV files to read multiple table data and generate movie record list
+   @param: string - file name, string - file name
+   @ret: movie record list
+*)  
 let  load_movie_data(credits: string) (movies: string)(*(keywords: string)*): Movie.t =
   let credits = parse_credit credits in
   let movies = parse_movies movies in

@@ -1,6 +1,9 @@
 open Core
-
-
+(*
+   calculate average value of vote_average
+   @param: movie record list 
+   @ret:  float - average of vote_average field of the entire movie record list
+*)
 let vote_average (l: Movie.t): float =
   let sum =
     List.map l ~f:(fun { vote_average; _ } -> vote_average) |>
@@ -9,7 +12,11 @@ let vote_average (l: Movie.t): float =
   let len = List.length l in
   Float.O.(sum / of_int len)
 
-
+(*
+   calculate quantile value of movie record list
+   @param: movie record list 
+   @ret: quantile
+*)
 let quantile (l: Movie.t): float =
   let vote_counts =
     List.map l ~f:(fun { vote_count ; _} -> float_of_int vote_count) |>
@@ -17,12 +24,25 @@ let quantile (l: Movie.t): float =
   in
   Owl_stats.quantile vote_counts  0.9
 
-
+(*
+   filter movie record list and get movies whose vote_count are greater than quantile
+   @param: movie record list
+   @ret: movie record list
+*)
 let filter_vote_count (l: Movie.t): Movie.t = 
   let m = quantile l in
   List.filter l ~f:(fun { vote_count; _ } -> Float.compare (float_of_int vote_count) m >= 0)
 
-
+(*
+  sort movie record list by weighted_rating
+  weighted_rating = v / (v + m) * R + m / (v + m) * C
+  - v is the number of votes for the movie [movie's vote_count]
+  - m is the minimum votes required to be listed in the chart [quantile]
+  - C is the mean vote across the whole report[average of vote_count]
+  - R is the average rating of the movie[movie's vote_average]
+  @param: movie record list
+  @ret: movie record list
+*)
 let sort_by_weighted_rating (l: Movie.t): Movie.t =
   let c = vote_average l in
   let m = quantile l in
@@ -37,12 +57,22 @@ let sort_by_weighted_rating (l: Movie.t): Movie.t =
     Float.compare x y) |>
   List.rev
 
-
+(*
+   sort movie record list by movie's popularity
+   @param: movie record list
+   @ret: movie record list
+*)
 let sort_by_popularity (l: Movie.t): Movie.t =
   List.sort l ~compare:(fun x y -> Float.compare x.popularity y.popularity) |>
   List.rev
 
-
+(*
+   sort movie record list and follow rules:
+   - get the average of the rankings ranked by weighted_rating and popularity, who is bigger will rank higher
+   - if the means are the same, rank them by their vote_count
+   @param: movie record list
+   @ret: movie record list
+*)
 let sort (l: Movie.t): Movie.t =
   let lwr = sort_by_weighted_rating l |> List.mapi ~f:(fun i m -> i + 1, ((m: Movie.movie).movie_id)) in
   let lp = sort_by_popularity l |> List.mapi ~f:(fun i m -> i + 1, m) in
@@ -63,5 +93,9 @@ let sort (l: Movie.t): Movie.t =
   List.rev |>
   List.map ~f:snd
 
-
+(*
+   Enter the number n, and get n recommended movie information
+   @param: movie record list,  int - Number of recommended movies
+   @ret: movie record list
+*)
 let  get_recommendations (l: Movie.t) (n: int): Movie.t = List.take (sort l) n
