@@ -58,7 +58,3 @@ let find_movieid_by_title ~(movie_list: t) (req_title: string): int =
 
 let find_title_by_movieid ~(movie_list: t) (req_id: int) : string = 
   let movie = find_movie_by_movieid ~movie_list req_id in movie.title
-
-let find_title_by_idx ~(movie_list: t) (req_idx: int): string = 
-  let movie_id = find_movieid_by_idx ~movie_list req_idx in 
-  find_title_by_movieid ~movie_list movie_id

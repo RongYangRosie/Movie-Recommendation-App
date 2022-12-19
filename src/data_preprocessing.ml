@@ -1,32 +1,6 @@
 open Core
 open Yojson
 open Rating
-(* open Movie *)
-
-(*
-  delete duplicate movies which have same movie_id 
-  @param: basic_movie list 
-  @ret: basic_movie list 
-*)
-let rec remove_dup (l: Movie.basic_movie list) = match l with
-  | [] -> []
-  | h :: t -> 
-      let rest = remove_dup t in 
-      if List.mem t h ~equal:(fun x y -> x.id = y.id) 
-      then rest 
-      else h :: rest
-
-(*
-   delete movies whose genres are empty
-   @param: basic_movie list 
-   @ret: basic_movie list 
-*)
-let rec delete_null(l: Movie.basic_movie list) = match l with
-  | [] -> []
-  | h :: t ->
-      match h.genres with
-      | "" -> delete_null t
-      | _ -> h :: delete_null t
 
 (*
    read credit data from tmdb_5000_credits.csv, and create a credit record list
@@ -44,22 +18,6 @@ let parse_credit (f: string): Movie.credits =
           title = lookup "title";
           cast = lookup "cast";
           crew = lookup "crew"} : Movie.credit ) )
-
-(*
-   read rating data from ratings_small.csv, and create a rating record list
-   @param: string - file name
-   @ret: rating list 
-*)
-let parse_rating (f: string): Rating.t =
-  match Csv.load f with
-  | [] -> assert false
-  | header :: data ->
-      Csv.associate header data |>
-      List.map ~f:(fun row ->
-        let lookup key = List.Assoc.find_exn row ~equal:String.equal key in
-        ({ userid = lookup "userId" |> int_of_string; 
-           movieid = lookup "movieId" |> int_of_string;
-           rating = lookup "rating" |> float_of_string } : Rating.rating ))
 
 (*
    read movies from ratings_small.csv, and create a rating record list
