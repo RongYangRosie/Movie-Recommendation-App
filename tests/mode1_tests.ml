@@ -15,7 +15,7 @@ let mk_result_vote vote_average =
     genres = [];
     overview = "";
     popularity = 1.;
-    vote_count = 1.;
+    vote_count = 1;
     vote_average;
   }
   
@@ -34,34 +34,34 @@ let mk_result_vote vote_average =
   (* 2 *)
   (* test suite for quantile *)
   let data = [{Movie.movie_id = 1; title = "Avatar"; cast = []; director = "";
-  keywords = []; genres = []; overview = ""; popularity = 1.; vote_count = 1.;
+  keywords = []; genres = []; overview = ""; popularity = 1.; vote_count = 1;
   vote_average = 1.};
   {Movie.movie_id = 1; title = "Avatar"; cast = []; director = "";
-  keywords = []; genres = []; overview = ""; popularity = 1.; vote_count = 2.;
+  keywords = []; genres = []; overview = ""; popularity = 1.; vote_count = 2;
   vote_average = 1.};
   {Movie.movie_id = 1; title = "Avatar"; cast = []; director = "";
-  keywords = []; genres = []; overview = ""; popularity = 1.; vote_count = 3.;
+  keywords = []; genres = []; overview = ""; popularity = 1.; vote_count = 3;
   vote_average = 1.};
   {Movie.movie_id = 1; title = "Avatar"; cast = []; director = "";
-  keywords = []; genres = []; overview = ""; popularity = 1.; vote_count = 4.;
+  keywords = []; genres = []; overview = ""; popularity = 1.; vote_count = 4;
   vote_average = 1.};
   {Movie.movie_id = 1; title = "Avatar"; cast = []; director = "";
-  keywords = []; genres = []; overview = ""; popularity = 1.; vote_count = 5.;
+  keywords = []; genres = []; overview = ""; popularity = 1.; vote_count = 5;
   vote_average = 1.};
   {Movie.movie_id = 1; title = "Avatar"; cast = []; director = "";
-  keywords = []; genres = []; overview = ""; popularity = 1.; vote_count = 6.;
+  keywords = []; genres = []; overview = ""; popularity = 1.; vote_count = 6;
   vote_average = 1.};
   {Movie.movie_id = 1; title = "Avatar"; cast = []; director = "";
-  keywords = []; genres = []; overview = ""; popularity = 1.; vote_count = 7.;
+  keywords = []; genres = []; overview = ""; popularity = 1.; vote_count = 7;
   vote_average = 1.};
   {Movie.movie_id = 1; title = "Avatar"; cast = []; director = "";
-  keywords = []; genres = []; overview = ""; popularity = 1.; vote_count = 8.;
+  keywords = []; genres = []; overview = ""; popularity = 1.; vote_count = 8;
   vote_average = 1.};
   {Movie.movie_id = 1; title = "Avatar"; cast = []; director = "";
-  keywords = []; genres = []; overview = ""; popularity = 1.; vote_count = 9.;
+  keywords = []; genres = []; overview = ""; popularity = 1.; vote_count = 9;
   vote_average = 1.};
   {Movie.movie_id = 1; title = "Avatar"; cast = []; director = "";
-  keywords = []; genres = []; overview = ""; popularity = 1.; vote_count = 10.;
+  keywords = []; genres = []; overview = ""; popularity = 1.; vote_count = 10;
   vote_average = 1.}]
   
   let quantile_tests = "test suite for quantile" >::: [
@@ -72,7 +72,7 @@ let mk_result_vote vote_average =
   (* 3 *)
   (* test suite for filter_vote_count *)
   let result = [{Movie.movie_id = 1; title = "Avatar"; cast = []; director = "";
-  keywords = []; genres = []; overview = ""; popularity = 1.; vote_count = 10.;
+  keywords = []; genres = []; overview = ""; popularity = 1.; vote_count = 10;
   vote_average = 1.}]
   let test_for_filter_vote_count = "test suite for filter_vote_count" >:::
   [
@@ -83,34 +83,34 @@ let mk_result_vote vote_average =
   (* 4 *)
   (* test suite for sort_by_weighted_rating *)
   let result = [{Movie.movie_id = 1; title = "Avatar"; cast = []; director = "";
-  keywords = []; genres = []; overview = ""; popularity = 1.; vote_count = 10.;
+  keywords = []; genres = []; overview = ""; popularity = 1.; vote_count = 10;
   vote_average = 1.};
   {Movie.movie_id = 1; title = "Avatar"; cast = []; director = "";
-  keywords = []; genres = []; overview = ""; popularity = 1.; vote_count = 7.;
+  keywords = []; genres = []; overview = ""; popularity = 1.; vote_count = 7;
   vote_average = 1.};
   {Movie.movie_id = 1; title = "Avatar"; cast = []; director = "";
-  keywords = []; genres = []; overview = ""; popularity = 1.; vote_count = 6.;
+  keywords = []; genres = []; overview = ""; popularity = 1.; vote_count = 6;
   vote_average = 1.};
   {Movie.movie_id = 1; title = "Avatar"; cast = []; director = "";
-  keywords = []; genres = []; overview = ""; popularity = 1.; vote_count = 5.;
+  keywords = []; genres = []; overview = ""; popularity = 1.; vote_count = 5;
   vote_average = 1.};
   {Movie.movie_id = 1; title = "Avatar"; cast = []; director = "";
-  keywords = []; genres = []; overview = ""; popularity = 1.; vote_count = 4.;
+  keywords = []; genres = []; overview = ""; popularity = 1.; vote_count = 4;
   vote_average = 1.};
   {Movie.movie_id = 1; title = "Avatar"; cast = []; director = "";
-  keywords = []; genres = []; overview = ""; popularity = 1.; vote_count = 3.;
+  keywords = []; genres = []; overview = ""; popularity = 1.; vote_count = 3;
   vote_average = 1.};
   {Movie.movie_id = 1; title = "Avatar"; cast = []; director = "";
-  keywords = []; genres = []; overview = ""; popularity = 1.; vote_count = 2.;
+  keywords = []; genres = []; overview = ""; popularity = 1.; vote_count = 2;
   vote_average = 1.};
   {Movie.movie_id = 1; title = "Avatar"; cast = []; director = "";
-  keywords = []; genres = []; overview = ""; popularity = 1.; vote_count = 1.;
+  keywords = []; genres = []; overview = ""; popularity = 1.; vote_count = 1;
   vote_average = 1.};
   {Movie.movie_id = 1; title = "Avatar"; cast = []; director = "";
-  keywords = []; genres = []; overview = ""; popularity = 1.; vote_count = 9.;
+  keywords = []; genres = []; overview = ""; popularity = 1.; vote_count = 9;
   vote_average = 1.};
   {Movie.movie_id = 1; title = "Avatar"; cast = []; director = "";
-  keywords = []; genres = []; overview = ""; popularity = 1.; vote_count = 8.;
+  keywords = []; genres = []; overview = ""; popularity = 1.; vote_count = 8;
   vote_average = 1.}]
   let test_for_sort_by_weighted_rating = "test suite for sort_by_weighted_rating" >:::
   [
@@ -129,7 +129,7 @@ let mk_result_vote vote_average =
       genres = [];
       overview = "";
       popularity;
-      vote_count = 1.;
+      vote_count = 1;
       vote_average = 1.
     }
   
@@ -158,36 +158,36 @@ let mk_result_vote vote_average =
       vote_average = 1.;
     }
   
-  let data = List.init 10 ~f:(fun i -> mk_result_sort i (float_of_int i) (float_of_int i))
+  let data = List.init 10 ~f:(fun i -> mk_result_sort i (float_of_int i)  i)
   let result = [{Movie.movie_id = 0; title = "Avatar"; cast = []; director = "";
-  keywords = []; genres = []; overview = ""; popularity = 0.; vote_count = 0.;
+  keywords = []; genres = []; overview = ""; popularity = 0.; vote_count = 0;
   vote_average = 1.};
   {Movie.movie_id = 1; title = "Avatar"; cast = []; director = "";
-  keywords = []; genres = []; overview = ""; popularity = 1.; vote_count = 1.;
+  keywords = []; genres = []; overview = ""; popularity = 1.; vote_count = 1;
   vote_average = 1.};
   {Movie.movie_id = 2; title = "Avatar"; cast = []; director = "";
-  keywords = []; genres = []; overview = ""; popularity = 2.; vote_count = 2.;
+  keywords = []; genres = []; overview = ""; popularity = 2.; vote_count = 2;
   vote_average = 1.};
   {Movie.movie_id = 8; title = "Avatar"; cast = []; director = "";
-  keywords = []; genres = []; overview = ""; popularity = 8.; vote_count = 8.;
+  keywords = []; genres = []; overview = ""; popularity = 8.; vote_count = 8;
   vote_average = 1.};
   {Movie.movie_id = 3; title = "Avatar"; cast = []; director = "";
-  keywords = []; genres = []; overview = ""; popularity = 3.; vote_count = 3.;
+  keywords = []; genres = []; overview = ""; popularity = 3.; vote_count = 3;
   vote_average = 1.};
   {Movie.movie_id = 9; title = "Avatar"; cast = []; director = "";
-  keywords = []; genres = []; overview = ""; popularity = 9.; vote_count = 9.;
+  keywords = []; genres = []; overview = ""; popularity = 9.; vote_count = 9;
   vote_average = 1.};
   {Movie.movie_id = 4; title = "Avatar"; cast = []; director = "";
-  keywords = []; genres = []; overview = ""; popularity = 4.; vote_count = 4.;
+  keywords = []; genres = []; overview = ""; popularity = 4.; vote_count = 4;
   vote_average = 1.};
   {Movie.movie_id = 5; title = "Avatar"; cast = []; director = "";
-  keywords = []; genres = []; overview = ""; popularity = 5.; vote_count = 5.;
+  keywords = []; genres = []; overview = ""; popularity = 5.; vote_count = 5;
   vote_average = 1.};
   {Movie.movie_id = 6; title = "Avatar"; cast = []; director = "";
-  keywords = []; genres = []; overview = ""; popularity = 6.; vote_count = 6.;
+  keywords = []; genres = []; overview = ""; popularity = 6.; vote_count = 6;
   vote_average = 1.};
   {Movie.movie_id = 7; title = "Avatar"; cast = []; director = "";
-  keywords = []; genres = []; overview = ""; popularity = 7.; vote_count = 7.;
+  keywords = []; genres = []; overview = ""; popularity = 7.; vote_count = 7;
   vote_average = 1.}]
   
   let test_for_sort = "test suite for sort" >::: [
@@ -208,7 +208,7 @@ let mk_result_vote vote_average =
       genres = [];
       overview = "";
       popularity = 1.;
-      vote_count = 1.;
+      vote_count = 1;
       vote_average = 1.
     }
   
