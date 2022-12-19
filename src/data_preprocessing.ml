@@ -1,6 +1,32 @@
 open Core
 open Yojson
 open Rating
+(* open Movie *)
+
+(*
+  delete duplicate movies which have same movie_id 
+  @param: basic_movie list 
+  @ret: basic_movie list 
+*)
+let rec remove_dup (l: Movie.basic_movie list) = match l with
+  | [] -> []
+  | h :: t -> 
+      let rest = remove_dup t in 
+      if List.mem t h ~equal:(fun x y -> x.id = y.id) 
+      then rest 
+      else h :: rest
+
+(*
+   delete movies whose genres are empty
+   @param: basic_movie list 
+   @ret: basic_movie list 
+*)
+let rec delete_null(l: Movie.basic_movie list) = match l with
+  | [] -> []
+  | h :: t ->
+      match h.genres with
+      | "" -> delete_null t
+      | _ -> h :: delete_null t
 
 (*
    read credit data from tmdb_5000_credits.csv, and create a credit record list
@@ -127,7 +153,7 @@ let find_opt (str:string) (k, v) (name:string) : string option =
    @param: string - file name, string - file name
    @ret: movie record list
 *)  
-let load_movie_data(credits: string) (movies: string)(*(keywords: string)*): Movie.t =
+let  load_movie_data(credits: string) (movies: string)(*(keywords: string)*): Movie.t =
   let credits = parse_credit credits in
   let movies = parse_movies movies in
   (*let keywords = parse_keywords keywords in*)
@@ -151,6 +177,10 @@ let load_movie_data(credits: string) (movies: string)(*(keywords: string)*): Mov
           vote_average = movie.vote_average }: Movie.movie) )
   in
   List.filter_map result ~f:(fun x -> x)
+
+
+  
+
 
 let load_rating_data (filename: string): Rating.t =
   match Csv.load filename with

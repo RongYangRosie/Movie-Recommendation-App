@@ -22,9 +22,9 @@
 (library
   (name data_preprocessing)
   (modules data_preprocessing)
-  (libraries core csv yojson movie rating)
+  (libraries csv yojson movie rating)
   (preprocess
-    (pps ppx_deriving.show ppx_deriving.ord bisect_ppx))
+    (pps bisect_ppx))
 )
   
 (library

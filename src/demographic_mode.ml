@@ -98,4 +98,4 @@ let sort (l: Movie.t): Movie.t =
    @param: movie record list,  int - Number of recommended movies
    @ret: movie record list
 *)
-let  get_recommendations (l: Movie.t) (n: int): Movie.t = List.take (sort l) n
+let get_recommendations (l: Movie.t) (n: int): Movie.t = List.take (sort l) n

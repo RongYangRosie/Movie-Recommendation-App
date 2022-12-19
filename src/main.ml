@@ -5,7 +5,7 @@ open Movie
 open Utils
 
 let input_filename = "input_ratings.txt"
-let movie_list = load_movie_data "./dataset/tmdb_5000_movies.csv" "./dataset/tmdb_5000_credits.csv"
+let movie_list = load_movie_data "./dataset/tmdb_5000_credits.csv" "./dataset/tmdb_5000_movies.csv"
 let rating_list = load_rating_data "./dataset/new_ratings.csv"
 
 (* let rating_list = [
