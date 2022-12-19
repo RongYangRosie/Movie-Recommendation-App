@@ -44,9 +44,6 @@ type movies = movie list [@@deriving show]
 let find_idx_by_movieid ~(movie_list: t) (req_id: int): int =
   let idx, _ = List.findi_exn ~f:(fun _ elt -> elt.movie_id = req_id) movie_list in idx
 
-let find_movieid_by_idx ~(movie_list: t) (req_idx: int): int = 
-  let movie = List.nth_exn movie_list req_idx in movie.movie_id
-
 let find_movie_by_idx ~(movie_list: t) (req_idx: int): movie = 
   List.nth_exn movie_list req_idx
 
@@ -55,6 +52,3 @@ let find_movie_by_movieid ~(movie_list: t) (req_id: int): movie =
 
 let find_movieid_by_title ~(movie_list: t) (req_title: string): int = 
   let movie = List.find_exn ~f:(fun elt -> String.(elt.title = req_title)) movie_list in movie.movie_id
-
-let find_title_by_movieid ~(movie_list: t) (req_id: int) : string = 
-  let movie = find_movie_by_movieid ~movie_list req_id in movie.title
