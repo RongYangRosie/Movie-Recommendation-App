@@ -25,7 +25,7 @@ $ sudo apt-get install python-numpy
 To compile the project
 $dune build
 
-Then you can run the single executable, ./_build/default/main.exe in 3 different modes
+Then you can run the single executable, ./_build/default/main.exe in 3 different modes    
 $dune exec ./_build/default/main.exe 
 
 xxxx
