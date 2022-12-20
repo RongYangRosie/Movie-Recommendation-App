@@ -20,7 +20,7 @@ An Interactive command-line application built in OCaml for movie recommendation.
 
 ## Build and run the project
 
-1. Install python library sklearn 
+1. Install python library sklearn ([See the official instructions](https://scikit-learn.org/stable/install.html))
 
    ```shell
    $pip3 install -U scikit-learn
