@@ -16,7 +16,8 @@ input a list which contains the movie and corresponding rates.
 Meihan Lin, Rong Yang
 
 ## Movie and recommendation ##  
-Every movie has a unique identifiers for objects(title, cast, director, keywords, genres, overview, popularity, vote_count, vote_average). In mode1, user could input a number to get top N movies. In mode2, user could xxxxx
+Every movie has a unique identifiers for objects(title, cast, director, keywords, genres, overview, popularity, vote_count, vote_average). In mode1, user could input a number to get top N movies. In mode2, we use the following features overview, cast, crew, keywords and genres
+to build our recommendation algorithm. In mode3, predict the rating for unwatched movie based on the scores provided by users with similar movie preferences.  
 
 ## Python Library: Numpy ##  
 $ sudo apt-get install python-numpy
