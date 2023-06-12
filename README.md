@@ -1,7 +1,5 @@
 # movie-recommendation-app
 
-This is a final project of EN.601.429/629 Functional Programming in Software Engineering in Fall 2022.
-
 ## Overview
 
 An Interactive command-line application built in OCaml for movie recommendation. Use three modes based on the three types of recommendation systems to generate the recommendation list:
